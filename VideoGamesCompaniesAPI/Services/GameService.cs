@@ -50,12 +50,26 @@ namespace VideoGamesCompaniesAPI.Services
 
         public IEnumerable<GameDto> GetAll(int gameCompanyId)
         {
-            throw new NotImplementedException();
+            var gameCompany = GetGameCompanyById(gameCompanyId);
+            var gameDtos = _mapper.Map<List<GameDto>>(gameCompany.Games);
+
+            return gameDtos;
         }
 
         public GameDto GetById(int gameCompanyId, int gameId)
         {
-            throw new NotImplementedException();
+            var gameCompany = GetGameCompanyById(gameCompanyId);
+            var game = _dbContext
+                .Games
+                .FirstOrDefault(g => g.Id == gameId);
+
+            if (game is null || game.GameCompanyId != gameCompanyId)
+            {
+                throw new NotFoundException("Game is not found");
+            }
+
+            var gameDto = _mapper.Map<GameDto>(game);
+            return gameDto;
         }
 
         private GameCompany GetGameCompanyById(int id)

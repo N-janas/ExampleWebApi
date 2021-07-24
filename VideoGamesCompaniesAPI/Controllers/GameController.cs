@@ -28,6 +28,22 @@ namespace VideoGamesCompaniesAPI.Controllers
             return Created($"api/gameCompany/{gameCompanyId}/game/{id}", null);
         }
 
+        [HttpGet("{gameId}")]
+        public ActionResult<GameDto> Get([FromRoute] int gameCompanyId, [FromRoute] int gameId)
+        {
+            var game = _gameService.GetById(gameCompanyId, gameId);
+
+            return Ok(game);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<GameDto>> GetAll([FromRoute] int gameCompanyId)
+        {
+            var games = _gameService.GetAll(gameCompanyId);
+
+            return Ok(games);
+        }
+
 
     }
 }
