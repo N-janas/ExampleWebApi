@@ -33,6 +33,7 @@ namespace VideoGamesCompaniesAPI
             services.AddScoped<GameCompanySeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IGameCompanyService, GameCompanyService>();
+            services.AddScoped<IGameService, GameService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeSpanMiddleware>();
             services.AddSwaggerGen();

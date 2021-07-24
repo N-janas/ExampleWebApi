@@ -23,6 +23,8 @@ namespace VideoGamesCompaniesAPI
             CreateMap<CreateGameCompanyDto, GameCompany>()
                 .ForMember(gc => gc.HqAddress, c => c.MapFrom(dto => new HqAddress()
                 { City = dto.City, Street = dto.Street, PostalCode = dto.PostalCode }));
+
+            CreateMap<CreateGameDto, Game>();
         }
     }
 }

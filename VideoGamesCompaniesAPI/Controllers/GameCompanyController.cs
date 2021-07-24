@@ -9,7 +9,7 @@ using VideoGamesCompaniesAPI.Services;
 
 namespace VideoGamesCompaniesAPI.Controllers
 {
-    [Route("api/gameCompany")]
+    [Route("api/[controller]")]
     // ApiController
     //  if (!ModelState.IsValid)
     //      return BadRequest(ModelState);
@@ -24,7 +24,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update([FromBody] UpdateGameCompanyDto dto, [FromRoute] int id)
+        public ActionResult Put([FromBody] UpdateGameCompanyDto dto, [FromRoute] int id)
         {
             _gameCompanyService.Update(id, dto);
 
@@ -56,7 +56,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateGameCompany([FromBody] CreateGameCompanyDto dto)
+        public ActionResult Post([FromBody] CreateGameCompanyDto dto)
         {
             var id = _gameCompanyService.Create(dto);
 
