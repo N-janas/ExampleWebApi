@@ -44,6 +44,14 @@ namespace VideoGamesCompaniesAPI.Controllers
             return Ok(games);
         }
 
+        [HttpDelete]
+        public ActionResult Delete([FromRoute] int gameCompanyId)
+        {
+            _gameService.DeleteAll(gameCompanyId);
+
+            return NoContent();
+        }
+
 
     }
 }

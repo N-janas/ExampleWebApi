@@ -45,7 +45,10 @@ namespace VideoGamesCompaniesAPI.Services
 
         public void DeleteAll(int gameCompanyId)
         {
-            throw new NotImplementedException();
+            var gameCompany = GetGameCompanyById(gameCompanyId);
+
+            _dbContext.RemoveRange(gameCompany.Games);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<GameDto> GetAll(int gameCompanyId)
