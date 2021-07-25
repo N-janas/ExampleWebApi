@@ -14,6 +14,8 @@ namespace VideoGamesCompaniesAPI.Entities
         public DbSet<GameCompany> GameCompanies { get; set; }
         public DbSet<HqAddress> HqAddresses { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +37,14 @@ namespace VideoGamesCompaniesAPI.Entities
                 .Property(a => a.Street)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<Role>()
+                .Property(r => r.Name)
+                .IsRequired();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
