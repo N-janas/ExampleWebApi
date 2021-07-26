@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using VideoGamesCompaniesAPI.Entities;
 using VideoGamesCompaniesAPI.Middleware;
+using VideoGamesCompaniesAPI.Models;
+using VideoGamesCompaniesAPI.Models.Validators;
 using VideoGamesCompaniesAPI.Services;
 
 namespace VideoGamesCompaniesAPI
@@ -29,7 +33,7 @@ namespace VideoGamesCompaniesAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddDbContext<GameCompanyDbContext>();
             services.AddScoped<GameCompanySeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
@@ -38,6 +42,7 @@ namespace VideoGamesCompaniesAPI
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddScoped<RequestTimeSpanMiddleware>();
             services.AddSwaggerGen();
         }
