@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace VideoGamesCompaniesAPI.Controllers
     //  if (!ModelState.IsValid)
     //      return BadRequest(ModelState);
     [ApiController]
+    [Authorize]
     public class GameCompanyController : ControllerBase
     {
         private readonly IGameCompanyService _gameCompanyService;
@@ -24,6 +26,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = ("Admin,Manager"))]
         public ActionResult Put([FromBody] UpdateGameCompanyDto dto, [FromRoute] int id)
         {
             _gameCompanyService.Update(id, dto);
@@ -32,6 +35,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = ("Admin,Manager"))]
         public ActionResult Delete([FromRoute] int id)
         {
             _gameCompanyService.Delete(id);
@@ -40,6 +44,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<GameCompanyDto>> GetAll()
         {
             var restaurantsDtos = _gameCompanyService.GetAll();
@@ -56,6 +61,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Admin,Manager"))]
         public ActionResult Post([FromBody] CreateGameCompanyDto dto)
         {
             var id = _gameCompanyService.Create(dto);

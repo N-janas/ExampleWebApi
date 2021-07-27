@@ -44,6 +44,7 @@ namespace VideoGamesCompaniesAPI
                 option.DefaultAuthenticateScheme = "Bearer";
                 option.DefaultScheme = "Bearer";
                 option.DefaultChallengeScheme = "Bearer";
+                option.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             }).AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
@@ -93,7 +94,7 @@ namespace VideoGamesCompaniesAPI
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
