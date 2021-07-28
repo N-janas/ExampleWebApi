@@ -31,6 +31,9 @@ namespace VideoGamesCompaniesAPI.Models.Validators
                         context.AddFailure("Email", "Email already in use");
                     }
                 });
+
+            RuleFor(x => x.DateOfBirth)
+                .NotEmpty();
         }
     }
 }

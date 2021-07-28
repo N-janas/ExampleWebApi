@@ -44,7 +44,6 @@ namespace VideoGamesCompaniesAPI
                 option.DefaultAuthenticateScheme = "Bearer";
                 option.DefaultScheme = "Bearer";
                 option.DefaultChallengeScheme = "Bearer";
-                option.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             }).AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
@@ -57,7 +56,10 @@ namespace VideoGamesCompaniesAPI
                 };
 
             });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality"));
+            });
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<GameCompanyDbContext>();
             services.AddScoped<GameCompanySeeder>();

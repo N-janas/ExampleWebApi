@@ -53,6 +53,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "HasNationality")]
         public ActionResult<GameCompanyDto> Get([FromRoute] int id)
         {
             var restauranat = _gameCompanyService.GetById(id);
