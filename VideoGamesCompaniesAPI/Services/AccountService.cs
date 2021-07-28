@@ -56,6 +56,7 @@ namespace VideoGamesCompaniesAPI.Services
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.Role, $"{user.Role.Name}"),
                 new Claim("DateOfBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             if (!string.IsNullOrEmpty(user.Nationality))

@@ -26,7 +26,6 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = ("Admin,Manager"))]
         public ActionResult Put([FromBody] UpdateGameCompanyDto dto, [FromRoute] int id)
         {
             _gameCompanyService.Update(id, dto);
@@ -35,7 +34,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = ("Admin,Manager"))]
+        [Authorize(Policy = "HasNationality")]
         public ActionResult Delete([FromRoute] int id)
         {
             _gameCompanyService.Delete(id);
@@ -53,7 +52,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "HasNationality")]
+        [Authorize(Policy = "AtLeast20Yo")]
         public ActionResult<GameCompanyDto> Get([FromRoute] int id)
         {
             var restauranat = _gameCompanyService.GetById(id);
