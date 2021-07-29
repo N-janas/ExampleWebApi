@@ -77,6 +77,8 @@ namespace VideoGamesCompaniesAPI
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddScoped<RequestTimeSpanMiddleware>();
+            services.AddScoped<IUserContextService, UserContextService>();
+            services.AddHttpContextAccessor();
             services.AddSwaggerGen();
         }
 

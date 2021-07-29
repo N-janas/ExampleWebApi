@@ -17,11 +17,11 @@ namespace VideoGamesCompaniesAPI.Services
 {
     public interface IGameCompanyService
     {
-        int Create(CreateGameCompanyDto dto, int userId);
-        void Delete(int id, ClaimsPrincipal user);
+        int Create(CreateGameCompanyDto dto);
+        void Delete(int id);
         IEnumerable<GameCompanyDto> GetAll();
         GameCompanyDto GetById(int id);
-        void Update(int id, UpdateGameCompanyDto dto, ClaimsPrincipal user);
+        void Update(int id, UpdateGameCompanyDto dto);
     }
 
     public class GameCompanyService : IGameCompanyService
@@ -30,16 +30,19 @@ namespace VideoGamesCompaniesAPI.Services
         private readonly IMapper _mapper;
         private readonly ILogger<GameCompanyService> _logger;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
 
-        public GameCompanyService(GameCompanyDbContext dbContext, IMapper mapper, ILogger<GameCompanyService> logger, IAuthorizationService authorizationService)
+        public GameCompanyService(GameCompanyDbContext dbContext, IMapper mapper, ILogger<GameCompanyService> logger,
+            IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
             _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
 
-        public void Update(int id, UpdateGameCompanyDto dto, ClaimsPrincipal user)
+        public void Update(int id, UpdateGameCompanyDto dto)
         {
 
             var gameCompany = _dbContext
@@ -49,7 +52,7 @@ namespace VideoGamesCompaniesAPI.Services
             if (gameCompany is null)
                 throw new NotFoundException("Game company not found");
 
-            var authorizationResult = _authorizationService.AuthorizeAsync(user, gameCompany,
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, gameCompany,
                 new ResourceOperationRequirement(ResourceOperation.Update)).Result;
 
             if (!authorizationResult.Succeeded)
@@ -92,17 +95,17 @@ namespace VideoGamesCompaniesAPI.Services
             return results;
         }
 
-        public int Create(CreateGameCompanyDto dto, int userId)
+        public int Create(CreateGameCompanyDto dto)
         {
             var gameCompany = _mapper.Map<GameCompany>(dto);
-            gameCompany.CreatedById = userId;
+            gameCompany.CreatedById = _userContextService.GetUserId;
             _dbContext.GameCompanies.Add(gameCompany);
             _dbContext.SaveChanges();
 
             return gameCompany.Id;
         }
 
-        public void Delete(int id, ClaimsPrincipal user)
+        public void Delete(int id)
         {
             var gameCompany = _dbContext
                 .GameCompanies
@@ -111,7 +114,7 @@ namespace VideoGamesCompaniesAPI.Services
             if (gameCompany is null)
                 throw new NotFoundException("Game company not found");
 
-            var authorizationResult = _authorizationService.AuthorizeAsync(user, gameCompany,
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, gameCompany,
                 new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
             if (!authorizationResult.Succeeded)

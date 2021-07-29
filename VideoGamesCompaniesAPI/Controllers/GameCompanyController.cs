@@ -29,7 +29,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Put([FromBody] UpdateGameCompanyDto dto, [FromRoute] int id)
         {
-            _gameCompanyService.Update(id, dto, User);
+            _gameCompanyService.Update(id, dto);
 
             return Ok();
         }
@@ -38,7 +38,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         [Authorize(Policy = "HasNationality")]
         public ActionResult Delete([FromRoute] int id)
         {
-            _gameCompanyService.Delete(id, User);
+            _gameCompanyService.Delete(id);
 
             return NoContent();
         }
@@ -65,8 +65,7 @@ namespace VideoGamesCompaniesAPI.Controllers
         [Authorize(Roles = ("Admin,Manager"))]
         public ActionResult Post([FromBody] CreateGameCompanyDto dto)
         {
-            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            var id = _gameCompanyService.Create(dto, userId);
+            var id = _gameCompanyService.Create(dto);
 
             return Created($"/api/gameCompany/{id}", null);
         }
