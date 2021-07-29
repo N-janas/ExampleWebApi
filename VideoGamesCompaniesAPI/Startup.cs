@@ -65,6 +65,7 @@ namespace VideoGamesCompaniesAPI
             });
 
             services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<GameCompanyDbContext>();
             services.AddScoped<GameCompanySeeder>();

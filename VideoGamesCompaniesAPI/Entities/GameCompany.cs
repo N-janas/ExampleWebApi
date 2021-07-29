@@ -13,6 +13,8 @@ namespace VideoGamesCompaniesAPI.Entities
         public string Description { get; set; }
         public string CEO { get; set; }
         public string ContactEmail { get; set; }
+        public int? CreatedById { get; set; }
+        public virtual User CreatedBy { get; set; }
 
         public int HqAddressId { get; set; }
         public virtual HqAddress HqAddress { get; set; }
